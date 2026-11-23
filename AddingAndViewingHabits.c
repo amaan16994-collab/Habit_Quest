@@ -89,6 +89,120 @@ void viewHabits(){
     
     
 }
+
+void edithabit()
+{
+    int index = selectHabit();
+
+    if (index == -1)
+    {
+        return;
+    }
+
+    char newName[50];
+
+    printf("Enter the new habit name: ");
+    readString(newName, 50);
+
+    if (newName[0] == '\0')
+    {
+        printf("Habit name cannot be empty!\n");
+        return;
+    }
+
+    strcpy(habits[index].name, newName);
+
+    saveHabits();
+
+    printf("Habit updated successfully!\n");
+}
+
+void removehabit()
+{
+    int index = selectHabit();
+
+    if (index == -1)
+    {
+        return;
+    }
+
+    for (int i = index; i < habitCount - 1; i++)
+    {
+        habits[i] = habits[i + 1];
+    }
+
+    habitCount--;
+
+    saveHabits();
+
+    printf("Habit removed successfully!\n");
+}
+
+void markcomplete()
+{
+    int index = selectHabit();
+
+    if (index == -1)
+    {
+        return;
+    }
+
+    if (habits[index].completedToday == 1)
+    {
+        printf("This habit is already completed!\n");
+        return;
+    }
+
+    habits[index].completedToday = 1;
+
+    saveHabits();
+
+    printf("Habit marked as completed!\n");
+}
+
+void showprogress()
+{
+    if (habitCount == 0)
+    {
+        printf("No habits available to track progress!\n");
+        return;
+    }
+
+    int completed = 0;
+
+    for (int i = 0; i < habitCount; i++)
+    {
+        if (habits[i].completedToday == 1)
+        {
+            completed++;
+        }
+    }
+
+    float percentage = (completed * 100.0) / habitCount;
+
+    printf("\n----- Daily Progress -----\n");
+    printf("Completed habits: %d\n", completed);
+    printf("Total habits: %d\n", habitCount);
+    printf("Progress: %.2f%%\n", percentage);
+}
+
+void resetdaily()
+{
+    if (habitCount == 0)
+    {
+        printf("No habits to reset!\n");
+        return;
+    }
+
+    for (int i = 0; i < habitCount; i++)
+    {
+        habits[i].completedToday = 0;
+    }
+
+    saveHabits();
+
+    printf("Daily habit status has been reset!\n");
+}
 /* Manahil's code ends */
 
 //tenporaray main fucntion to call the other fucntions for testing 
